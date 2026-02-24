@@ -45,7 +45,8 @@ export const useGameLogic = () => {
             // Start background music
             const bgMusic = new Audio('/sounds/bg-music.mp3');
             bgMusic.loop = true;
-            bgMusic.volume = 0.2; // Low background volume
+            bgMusic.volume = 0.1; // Softer volume (was 0.2)
+            bgMusic.playbackRate = 0.8; // Slower speed
             bgMusic.play().catch((e) => console.log("Bg music failed to play:", e));
             bgMusicRef.current = bgMusic;
 
