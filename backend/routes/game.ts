@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import pool from '../db.js';
-import { v4 as uuidv4 } from 'uuid'; // Need uuid package? Or just generate random string.
 
 const router = Router();
 
