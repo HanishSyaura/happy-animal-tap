@@ -78,7 +78,7 @@ function App() {
       <main className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
         
         {/* Instruction */}
-        <div className="mb-8 text-center relative group cursor-pointer" onClick={() => targetAnimal && new SpeechSynthesisUtterance(targetAnimal.name).play && window.speechSynthesis.speak(new SpeechSynthesisUtterance(`Tap the ${targetAnimal.name}`))}>
+        <div className="mb-8 text-center relative group cursor-pointer" onClick={() => targetAnimal && window.speechSynthesis.speak(new SpeechSynthesisUtterance(`Tap the ${targetAnimal.name}`))}>
           <h1 className="text-4xl md:text-6xl font-black text-white drop-shadow-lg stroke-black transform transition-transform group-hover:scale-105">
             Tap the <span className="text-yellow-300 underline decoration-wavy decoration-4 underline-offset-8">{targetAnimal?.name}</span>
           </h1>
