@@ -5,7 +5,7 @@ import { Trophy, RefreshCw, Volume2, Play } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 function App() {
-  const { gameState, handleAnswer, feedback, lastWrongId, resetGame, playAnimalSound, startGame, hasStarted } = useGameLogic();
+  const { gameState, handleAnswer, feedback, lastWrongId, resetGame, playAnimalSound, startGame, hasStarted, isOffline } = useGameLogic();
   const { score, difficultyLevel, currentAnimals, targetAnimal, showHint } = gameState;
 
   // Simple shake animation trigger
@@ -70,6 +70,12 @@ function App() {
             <span className="text-4xl font-black text-slate-800 leading-none">{score}</span>
           </div>
         </div>
+
+        {isOffline && (
+            <div className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse shadow-md">
+                OFFLINE MODE
+            </div>
+        )}
 
         <div className="flex gap-2">
             <button 

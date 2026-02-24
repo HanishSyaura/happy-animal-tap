@@ -21,6 +21,7 @@ export const useGameLogic = () => {
     });
     
     const [hasStarted, setHasStarted] = useState(false);
+    const [isOffline, setIsOffline] = useState(false);
     const bgMusicRef = useRef<HTMLAudioElement | null>(null);
 
     const [lastActionTime, setLastActionTime] = useState<number>(Date.now());
@@ -52,9 +53,12 @@ export const useGameLogic = () => {
             setGameState(prev => ({ ...prev, sessionId, isPlaying: true }));
             startRound(1);
         } catch (error) {
-            console.error('Failed to start session', error);
-            setHasStarted(false);
-            alert("Failed to connect to the game server. Please ensure the backend is running and accessible.");
+            console.warn('Failed to start session, switching to offline mode', error);
+            // Fallback to offline mode
+            setIsOffline(true);
+            const offlineSessionId = 'offline_' + Date.now();
+            setGameState(prev => ({ ...prev, sessionId: offlineSessionId, isPlaying: true }));
+            startRound(1);
         }
     };
     
@@ -296,22 +300,28 @@ export const useGameLogic = () => {
         }
 
         // Send stats
-        try {
-            await api.submitAnswer({
-                sessionId: gameState.sessionId,
-                isCorrect,
-                reactionTime,
-                currentScore: isCorrect ? gameState.score + 1 : gameState.score,
-                difficultyLevel: gameState.difficultyLevel
-            });
-        } catch (e) {
-            console.error(e);
+        if (!isOffline) {
+            try {
+                await api.submitAnswer({
+                    sessionId: gameState.sessionId,
+                    isCorrect,
+                    reactionTime,
+                    currentScore: isCorrect ? gameState.score + 1 : gameState.score,
+                    difficultyLevel: gameState.difficultyLevel
+                });
+            } catch (e) {
+                console.error(e);
+            }
         }
     };
     
     const resetGame = async () => {
-        if (gameState.sessionId) {
-            await api.resetSession(gameState.sessionId);
+        if (gameState.sessionId && !isOffline) {
+            try {
+                await api.resetSession(gameState.sessionId);
+            } catch (e) {
+                console.error("Failed to reset session on server", e);
+            }
         }
         setGameState(prev => ({
             ...prev,
@@ -332,6 +342,7 @@ export const useGameLogic = () => {
         resetGame,
         playAnimalSound,
         startGame,
-        hasStarted
+        hasStarted,
+        isOffline
     };
 };
