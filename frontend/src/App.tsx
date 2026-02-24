@@ -44,8 +44,15 @@ function App() {
     }
     
     return (
-      <div className="min-h-screen bg-blue-400 flex items-center justify-center">
+      <div className="min-h-screen bg-blue-400 flex flex-col items-center justify-center gap-6">
         <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-white"></div>
+        <p className="text-white text-xl font-bold animate-pulse">Starting Game...</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-6 py-2 bg-white/20 hover:bg-white/30 text-white rounded-full font-bold transition-colors"
+        >
+          Cancel
+        </button>
       </div>
     );
   }
