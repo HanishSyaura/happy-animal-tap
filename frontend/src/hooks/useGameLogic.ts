@@ -53,6 +53,8 @@ export const useGameLogic = () => {
             startRound(1);
         } catch (error) {
             console.error('Failed to start session', error);
+            setHasStarted(false);
+            alert("Failed to connect to the game server. Please ensure the backend is running and accessible.");
         }
     };
     
