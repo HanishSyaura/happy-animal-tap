@@ -74,23 +74,31 @@ source database.sql;
 
 ### Deployment
 
-#### GitHub
-1. Push the code to a GitHub repository.
+#### 1. Vercel (Frontend)
+This project is configured for Vercel deployment.
 
-#### Vercel (Frontend)
-1. Import the repository to Vercel.
-2. Set the **Root Directory** to `frontend` (or keep root if using monorepo settings, but usually `frontend` is safer if deploying just the static site).
-   - *Note*: Since the backend is separate, you need to deploy the backend first and update the API URL in the frontend.
-   - Update `frontend/src/api/game.ts` to point to your deployed backend URL instead of `/api` proxy if deploying separately.
+1.  Push the code to GitHub.
+2.  Log in to Vercel and **Add New Project**.
+3.  Import your `happy-animal-tap` repository.
+4.  **Configure Project**:
+    *   **Root Directory**: Click "Edit" and select `frontend`.
+    *   **Framework Preset**: Vite.
+    *   **Environment Variables**:
+        *   `VITE_API_URL`: The URL of your deployed backend (e.g., `https://your-backend-app.onrender.com`).
+5.  Click **Deploy**.
 
-#### Render (Backend)
-1. Create a new Web Service on Render.
-2. Connect your GitHub repository.
-3. Set **Root Directory** to `.`.
-4. Set **Build Command**: `npm install && npm run build` (Ensure backend build script exists if using TS, currently `tsx` is used for dev).
-   - *Production Tip*: For production, you should compile TS to JS. Add a build script for backend or use `ts-node`/`tsx` in production (not recommended for high load but fine for small apps).
-5. Set **Start Command**: `npx tsx backend/server.ts` (or compile and run `node backend/dist/server.js`).
-6. Add Environment Variables (`DB_HOST`, etc.) in Render dashboard.
+#### 2. Render (Backend)
+Since the backend uses MySQL and Node.js, Render is a good choice.
+
+1.  Log in to Render and create a **Web Service**.
+2.  Connect your GitHub repository.
+3.  **Configure Service**:
+    *   **Root Directory**: Leave empty or set to `.`.
+    *   **Build Command**: `npm install`
+    *   **Start Command**: `npx tsx backend/server.ts`
+4.  **Environment Variables**:
+    *   Add all variables from your `.env` file (`DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `PORT`).
+    *   *Note*: You need a cloud MySQL database (e.g., Railway, PlanetScale, or Render's own PostgreSQL/MySQL if available).
 
 ## Development Notes
 - **Voice Recognition**: Only works on supported browsers (Chrome recommended).
